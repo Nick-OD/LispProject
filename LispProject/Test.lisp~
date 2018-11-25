@@ -1,0 +1,23 @@
+;;;; -*- Mode: Lisp; -*-
+
+
+(setq famTree (make-hash-table))
+
+(with-open-file (str Testcase.txt
+                     :direction INPUT
+                     :if-does-not-exist )
+  (do ((line (read-line stream nil)
+             (read-line stream nil)))
+      ((null line))
+    (print line)))
+
+
+
+
+
+(defun ancestors (p tree)
+  (let ((parent1 (get-person (first (person-parents p))tree ))
+        (parent2 (get-person (second (person-parents p))tree )))
+    (if (null parent1)
+         nil
+       (append (list parent1 parent2) (ancestors parent1)(ancestors parent2)))))
