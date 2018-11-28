@@ -9,7 +9,8 @@
   (name nil)
   (parents (list))
   (children (list))
-  (spouses (list)))
+  (spouses (list))
+)
 
 
 
@@ -37,7 +38,7 @@
         (parent2 (get-person (second (person-parents p))tree )))
     (if (null parent1)
          nil
-       (append (list parent1 parent2) (ancestors parent1)(ancestors parent2)))))
+       (append (list parent1 parent2) (ancestors parent1 tree )(ancestors parent2 tree )))))
 
 
 
@@ -46,13 +47,29 @@
 
 (defun family()
  (let ((line nil) (tokens nil) (p1 nil) (p2 nil) (p3 nil)
-  (with-open-file (str Testcase.txt
-                     :direction INPUT
-                     :if-does-not-exist )
-    (do ((line (read-line stream nil)
-             (read-line stream nil)))
-        ((null line))
-      (print line)))
+       (line "(E John Mary Zach)")
+;  (with-open-file (str Testcase.txt
+;                     :direction INPUT
+;                     :if-does-not-exist )
+;    (do ((line (read-line stream nil)
+;             (read-line stream nil)))
+;        ((null line))
+      (print line)
+      (setf tokens (split-sequence " " line))
+      (cond ((string= (first tokens) "E")
+             (;Person creation and spouse children assignment here
+              (print (second words))
+              ))
+            ((string = (first tokens) "X")
+             (;Xquery stuff here
+              
+              ))
+            ((string = (first tokens) "W"))
+            (;Wquery stuff here
+
+             ))
+
+))
 
 
 

@@ -16,7 +16,7 @@
 
 (defun storeperson (name struct tree)
 ;  "Students need to write this! This should enter the person structure in STRUCT into the hashtable in FAMY-TREE with the key in SYMBOL-NAME."
-(setf (gethash name tree) struct))
+(setf (gethash name tree) person))
 
 
 (defun personstruct (name tree)
@@ -46,8 +46,9 @@
 
 
 (defun family()
- (let ((line nil) (tokens nil) (p1 nil) (p2 nil) (p3 nil)
-       (line "(E John Mary Zach)")
+ (let ((line nil) (tokens nil) (p1 nil) (p2 nil) (p3 nil))
+       (setf queries (list 'E 'X 'W))
+       (setf line (list (E John Mary Zach)))
 ;  (with-open-file (str Testcase.txt
 ;                     :direction INPUT
 ;                     :if-does-not-exist )
@@ -55,29 +56,26 @@
 ;             (read-line stream nil)))
 ;        ((null line))
       (print line)
-      (setf tokens (split-sequence " " line))
-      (cond ((string= (first tokens) "E")
+     ; (let tokens (split-sequence " " line))
+      (cond ((equal (first line) (first queries))
              (;Person creation and spouse children assignment here
-              (print (second words))
-              ))
-            ((string = (first tokens) "X")
-             (;Xquery stuff here
-              
-              ))
-            ((string = (first tokens) "W"))
-            (;Wquery stuff here
+              (format t ~a~% line)
+              ; Test to see if tree
+            ;  (setf p1 (gethash (second line) famTree))
+           ;   (setf p1 (make-person :name (second line)))
+           ;   (setf storeperson(p1 person famTree))
 
+            ;  (setf p2 (gethash (second line) famTree))
+            ;  (setf p2 (make-person :name (second line)))
+           ;   (setf storeperson(p2 person famtree))
+              ))
+            ((equal (first line) (second queries))
+             (;Xquery stuff here
+              (print (second line))
+              ))
+            ((equal (first line) (second queries))
+            (;Wquery stuff here
+              (print (second line))
              ))
 
-))
-
-
-
-
-
-
-
-
-
-
- )
+)))
