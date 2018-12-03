@@ -1,0 +1,10 @@
+(E Drew Martha Ray)
+(E Rebecca Xerxes Rosa)
+(E Ray Rebecca Rob)
+
+(E Drew Rosa Steve)
+(X Drew ancestor Rob)
+(X Rosa sibling Rob
+)
+(W sibling Ray
+)

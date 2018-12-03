@@ -1,0 +1,25 @@
+(E Albert Alfreda Alexa)
+(E Albert Alfreda Andrew)
+(E Alfreda Albert Allan)
+(E Alfreda Albert Amelia)
+(E Alfreda Albert Apolonia)
+(E Albert Alfreda Anthony)
+(E Albert Alfreda Aretha)
+
+(E Albert Alfreda Alberta
+)
+(E Albert Alfreda Arthur)
+(W child Alfreda)
+(E Alfreda Brett Bert)
+(E Alfreda Brett Bernice
+)
+(E Alfreda Brett Brad
+)
+(E Brett Carla Candice)
+(E Brett Carla Carrie)
+(E Brett Carla Carl
+)
+(W child Alfreda)
+(W child Albert
+)
+(W child Brett)

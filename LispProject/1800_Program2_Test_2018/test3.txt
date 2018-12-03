@@ -1,0 +1,49 @@
+(E Alex Alberta Andrew
+)
+(E Arthur Amelia Amy
+)
+(E Arthur Amelia Alice
+)
+(E Alice Albert Annie)
+(E Annie Anton Archibald)
+(E Andrew Amy Armond)
+(E Bert Beth Betty
+)
+(E Brenda Baylor Bradley)
+
+(E Bradley Betty Bill
+)
+(E Bill Amy Xerxes
+)
+(E Carl Charlene Chrissy
+)
+(E Christopher Chrissy Cammy)
+(E Derrick Doris David)
+(E David Drusilla Donald
+)
+(E David Drusilla Daniel
+)
+(E Elmer Emma Ervin
+)
+(E Ervin Esmerelda Erskin)
+(E Bill Cammy Fred
+)
+(W child Amy
+)
+(W child Bill)
+(W ancestor Xerxes)
+
+(W sibling Xerxes)
+
+(X Glenda unrelated Xerxes)
+
+(E Gavin Gladys Garrett)
+
+(E Gavin Gladys Glenda)
+(E Gavin Gladys Glendowyn
+)
+(E Gavin Gladys Gemma)
+
+(E Glenda Garett)
+(
+X Glenda unrelated Xerxes)
