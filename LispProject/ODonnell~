@@ -10,17 +10,17 @@
 
 
 (defun storeperson (name struct tree)
-;  "Students need to write this! This should enter the person structure in STRUCT into the hashtable in FAMY-TREE with the key in SYMBOL-NAME."
+;;;"Students need to write this! This should enter the person structure in STRUCT into the hashtable in FAMY-TREE with the key in SYMBOL-NAME."
 (setf (gethash name tree) struct))
 
 
 (defun personstruct (name tree)
- ; "Returns a structure of type person corresponding to the key SYMBOL-NAME in the hashtable FAMILY-TREE. If there is no one in the tree with the name in SYMBOL-NAME, returns NIL."
+ ;;"Returns a structure of type person corresponding to the key SYMBOL-NAME in the hashtable FAMILY-TREE. If there is no one in the tree with the name in SYMBOL-NAME, returns NIL."
   (gethash name tree nil))
 
 (defun addspouse (spouse-name p)
   (setf (person-spouses p) (cons spouse-name (person-spouses p)))
-;  (setf (person-spouses p) (sort (person-spouses p) #'string<
+;;;(setf (person-spouses p) (sort (person-spouses p) #'string<
 )
 
 (defun addchild (child-name p)
@@ -28,13 +28,13 @@
 )
 
 (defun getparents (p)
-  (person-parents (gethash p famTree)))
+  (person-parents (gethash p tree)))
 
 (defun getchildren (p)
-  (person-children (gethash p famTree)))
+  (person-children (gethash p tree)))
 
 (defun getspouses (p)
-  (person-spouses (gethash p famTree)))
+  (person-spouses (gethash p tree)))
 
 (defun siblings (p tree)
 (let ((parent1 (personstruct (first (person-parents p)) tree))
@@ -51,46 +51,66 @@
          nil
        (append (list(person-name parent1) (person-name parent2)) (ancestors parent1 tree )(ancestors parent2 tree )))))
 
-; is functions
-(defun isspouse (p1 p2)
-; Return boolean true or false
-(let ((spouse nil))
+;;; is funcitons
+(defun isspouse (p1 p2)                              
+(let ((spouse nil)) ; returns t true or nil false
 (if  (member (person-name p1) (person-spouses p2) :test #'equal) (setf spouse t))
 (if spouse t nil))) ; If spouse, spouse is true, else spouse is false 
 
-)
+ 
 
 (defun ischild (p1 p2)
   (let ((child nil))
-    (if (member (person-name p1) (person-children p2) :test #' equal) (setf child t))
+    (if (member (person-name p1) (person-children p2) :test #'equal) (setf child t))
     (if child t nil)))
-)
+ 
 
 (defun issibling (p1 p2 tree)
 (let ((sibling nil))
-  (if (member (person-name p1) (siblings p2 tree) :test 3'equal) (setf sibling t))
+  (if (member (person-name p1) (siblings p2 tree) :test #'equal) (setf sibling t))
 (if sibling t nil)))
 
-)
+ 
 
 (defun iscousin (p1 p2 tree)
-
-)
+(let ((cousinbool nil) (directrel nil))
+(if (equalp (person-name p1) (person-name p2)) (setf directrel t)) 
+(let ((ancestors2 (ancestors p2 tree)) (ancestors1 (ancestors p1 tree)))
+(if (or (member(person-name p1) ancestors2) (member (person-name p2) ancestors1)) (setf directrel t))
+(when (not directrel)
+  (loop for person in ancestors1 doing (if (member person ancestors2 :test #'equal) (setf cousinbool t)))))
+  (if cousinbool t nil)))
 
 (defun isancestor (p1 p2 tree)
-  (let ((ancestor nil))
-    (if (member (person-name p1) (ancestors p2 tree) :test #'equal) (setf ancestor t))
-    (if ancestor t nil)))
-)
+  (let ((ancestorbool nil))
+    (if (member (person-name p1) (ancestors p2 tree) :test #'equal) (setf ancestorbool t))
+    (if ancestorbool t nil)))
+ 
 
 (defun isunrelated (p1 p2 tree)
+(let ((unrelatedbool t))
+(if (or (ischild p1 p2) (ischild p2 p1)) (setf unrelatedbool nil)) ; if one person is a child of the other return false
+(if (issibling p1 p2 tree) (setf unrelatedbool nil))
+(if (iscousin p1 p2 tree) (setf unrealtedbool nil))
+(if (= (p1) (p2) #'string) (setf unrealtedbool t))
+(if (or (isancestor p1 p2 tree) (isancestor p2 p1 tree)) (setf unrelatedbool nil))
+(if unrelatedbool t nil)))
+  
+
+
+(defun equery (p1 p2 p3 tree)
+;;; Start by creating 
 
 )
 
 
+(defun xquery (p1 relation p2 tree)
 
+)
 
+(defun wquery (relation p tree)
 
+)
 
 
 
@@ -100,36 +120,41 @@
 (let (line (read *standard-input*))
    (loop for line
          until (eq line nil)
-         do (
-             print line
-      (cond ((string= (first line) "E" )
+         do (                       
+       (cond ((string= (first line) "E" )
              ;Person creation and spouse children assignment here
-              (p1 (second line))
-              (p2 (third line))
-              
+              (format t "~d~%" line)                          
+              (let ((p1 (first line)) (p2 (second line)) (p3(third line)))
               ; Test to see if tree, store if not
-              (if (= (personstruct p1 tree) nil)
+             (if (string= (personstruct p1 tree))
                 (setf person1 (storeperson p1 (make-person :name p1) tree))
                 )
-              (if (= (personstruct p2 tree) nil)
+              (if (string= (persontstruct p2  tree))
                   (setf person2 (storeperson p2 (make-person :name p2) tree))
-                )
-              
-              (loop for key being each hash-key of tree
-                    using (hash-value value)
-                    collect (list key value))
-              (format t "~%" tree)
-
-            )
+                )))                                                                                                                                                                                                   
             ((string= (first line) "X")
              ;Xquery stuff here
-              (print (second line))
-
-
-              )
+              (format t "~d~%" line); prints line
+            (let ((p1 (personstruct (second line) tree)) (p2 (personstruct (fourth line) tree)))
+              (cond ((string= (third line) "Spouse")     )
+                    ((string= (third line) "Child")  )
+                    ((string= (third line) "Sibling")      )
+                   ((string= (third line) "Ancestor")  )
+                   ((string= (third line) "Cousin")  )
+                   ((string= (third line) "Unrelated")
+                    ))))
             ((string= (first line) "W")
             ;Wquery stuff here
-              (print (second line))
-              ))
-
-)))))))
+              (format t "~d~%" line)
+              (let ((p1 (personsruct (third line) tree)) relation (second line))
+                (cond ((string= (relation) "Spouse")      )
+                      ((string= (relation) "Child")  )
+                      ((string= (relation) "Sibling")     )
+                      ((string= (relation) "Ancestor")  )
+                      ((string= (relation) "Cousin")   )
+                      ((string= (relation) "Unrelated")
+                       )))))
+))))))
+    
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+        

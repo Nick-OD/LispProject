@@ -98,61 +98,77 @@
   
 
 
+(defun equerychild (parent1 parent2 child tree)
+;;; Start by creating 
+(let ((p1 (personstruct parent1 tree)) (p2 (personstruct parent2 tree)))
+              ; Test to see if tree, store if not
+             (if (not (string= (personstruct parent1 tree)))
+                (setf p1 (storeperson parent1 (make-person :name parent1) tree))
+                )
+              (if (not (string= (persontstruct parent2  tree)))
+                  (setf p2 (storeperson parent2 (make-person :name parent2) tree))
+                ))
+(if 
 
+)
 
+(defun equerynochild(person1 person2 tree)
 
+)
+
+(defun xquery (person1 relation person2 tree)
+(let  ((p1 (personsruct person1 tree)) (p2 (personstruct person2 tree)))
+ (cond ((string= (relation) "Spouse")
+        (if (isspouse p1 p2) (format t "Yes~%") (format t "No~%")))
+   ((string= (relation) "Child")
+    (if (ischild p1 p2) (format t "Yes~%") (format t "No~%")))
+    ((string= (relation) "Sibling")
+     (if (issibling p1 p2 tree) (format t "Yes~%") (format t "No~%")))
+    ((string= (relation) "Ancestor") 
+    (if (isancestor p1 p2 tree) (format t "Yes~%") (format t "No~%")))
+    ((string= (relation) "Cousin") 
+    (if (iscousin p1 p2 tree) (format t "Yes~%") (format t "No~%")))
+   ((string= (relation) "Unrelated")
+      (if (isunrelated p1 p2 tree) (format t "No~%") (format t "Yes~%")))))
+)
+
+(defun wquery (relation p tree)
+(let (p1 (personstruct p tree))
+   (cond ((string= (relation) "Spouse")      )
+                      ((string= (relation) "Child")  )
+                      ((string= (relation) "Sibling")     )
+                      ((string= (relation) "Ancestor")  )
+                      ((string= (relation) "Cousin")   )
+                      ((string= (relation) "Unrelated")
+                       )))
+)
 
 
 
 (defun family()
   (let ((tree (make-hash-table :size 1000 :test #'equal)))
- (let ((line nil) (tokens nil) (p1 nil) (p2 nil) (p3 nil))
+ (let ((line nil) (tokens nil) (p1 nil) (p2 nil) (p3 nil) (relation nil))
 (let (line (read *standard-input*))
    (loop for line
          until (eq line nil)
          do (                       
        (cond ((string= (first line) "E" )
-             ;Person creation and spouse children assignment here
-              (format t "~d~%" line))                          
-                
-              ; Test to see if tree, store if not
-             (if (string= (personstruct p1 tree))
-                (setf person1 (storeperson p1 (make-person :name p1) tree))
-                )
-              (if (string= (persontstruct p2  tree))
-                  (setf person2 (storeperson p2 (make-person :name p2) tree))
-                )                                                                                                                                                                                                
-                 
-             
+            ;;;Person creation and spouse children assignment here
+              (format t "~d~%" line)
+              (if (not (equal (fourth line) nil)) ; if fourth word != nil
+              (equerychild (second line) (third line) (fourth line))
+                (equerynochild(second line) (third line) tree)
+              )                                                                                                                                                                                                   
             ((string= (first line) "X")
              ;Xquery stuff here
-              (format t "~d~%" line)); prints line
-            (let ((p1 (personstruct (second line) tree)) (p2 (personstruct (fourth line) tree)))
-              (cond ((string= (third line) "Spouse")
-                     
-                     )
-                    ((string= (third line) "Child")
-
-                     )
-                    ((string= (third line) "Sibling")
-                     
-                     )
-                   ((string= (third line) "Ancestor")
-
-                    )
-                   ((string= (third line) "Cousin")
-
-                    )
-                   ((string= (third line) "Unrelated")
-
-                    )
-
-
-               
+              (format t "~d~%" line); prints line
+            (x query (second line) (third line) (fourth line) tree))
+             
             ((string= (first line) "W")
             ;Wquery stuff here
-              (format t "~d~%" line)))
-
+              (format t "~d~%" line)
+              (wquery (second line) (third line) (tree))
+               ))
 ))))))
     
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
