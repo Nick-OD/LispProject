@@ -213,34 +213,35 @@
                                               :children (list)
                                               :spouses (list)) tree)))))
 
-#||
+
 (defun xquery (person1 relation person2 tree)
-(let  ((p1 (personsruct person1 tree)) (p2 (personstruct person2 tree)))
- (cond ((string= (relation) "Spouse")
-        (if (isspouse p1 p2) (format t "Yes~%") (format t "No~%")))
-   ((string= (relation) "Child")
-    (if (ischild p1 p2) (format t "Yes~%") (format t "No~%")))
-    ((string= (relation) "Sibling")
-     (if (issibling p1 p2 tree) (format t "Yes~%") (format t "No~%")))
-    ((string= (relation) "Ancestor") 
-    (if (isancestor p1 p2 tree) (format t "Yes~%") (format t "No~%")))
-    ((string= (relation) "Cousin") 
-    (if (iscousin p1 p2 tree) (format t "Yes~%") (format t "No~%")))
-   ((string= (relation) "Unrelated")
+(let  ((p1 (personstruct person1 tree)) (p2 (personstruct person2 tree))) 
+ (cond ((string= relation "SPOUSE") 
+        (if (isspouse p1 p2) (format t "Yes~%") (format t "No~%"))) 
+   ((string= relation "CHILD") 
+    (if (ischild p1 p2) (format t "Yes~%") (format t "No~%"))) 
+    ((string= relation "SIBLING") 
+     (if (issibling p1 p2 tree) (format t "Yes~%") (format t "No~%"))) 
+    ((string= relation "ANCESTOR")  
+    (if (isancestor p1 p2 tree) (format t "Yes~%") (format t "No~%"))) 
+    ((string= relation "COUSIN")  
+    (if (iscousin p1 p2 tree) (format t "Yes~%") (format t "No~%"))) 
+   ((string= relation "UNRELATED") 
       (if (isunrelated p1 p2 tree) (format t "No~%") (format t "Yes~%"))))))
-||#
+
 #||
 (defun wquery (relation p tree)
 (let (p1 (personstruct p tree))
    (cond ((string= (relation) "Spouse")      )
-                      ((string= (relation) "Child")  )
-                      ((string= (relation) "Sibling")     )
-                      ((string= (relation) "Ancestor")  )
-                      ((string= (relation) "Cousin")   )
-                      ((string= (relation) "Unrelated")
+                      ((string= (relation) "CHILD")  )
+                      ((string= (relation) "SIBLING")     )
+                      ((string= (relation) "ANCESTOR")  )
+                      ((string= (relation) "COUSIN")   )
+                      ((string= (relation) "UNRELATED")
                        )))
 )
 ||#
+
 
 
 (defun family()
@@ -254,16 +255,15 @@
               (equery (second line) (third line) (fourth line) tree))                                                                                                                                                                                                   
             ((string= (first line) "X")
              ;Xquery stuff here
-            ;;;  (format t "~a~%" line); prints line
-       ;     (x query (second line) (third line) (fourth line) tree))
+             (format t "~a~%" line); prints line
+            (xquery (second line) (third line) (fourth line) tree))
              )
-            ((string= (first line) "W")
+          ;;;  ((string= (first line) "W")
             ;Wquery stuff here
           ;;;    (format t "~a~%" line)
           ;;;    (wquery (second line) (third line) (tree))
                )))
-  (maphash #'(lambda (k v) (format t "~a => ~a~%" k v)) tree)
-)))
+)
     
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
         
