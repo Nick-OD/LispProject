@@ -6,4 +6,3 @@
 (X John ancestor Kara)
 (X John Spouse Mary)
 (W spouse John)
-(W child Mary)

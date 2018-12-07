@@ -20,7 +20,7 @@
 
 (defun addspouse (spouse-name p)
   (setf (person-spouses p) (cons spouse-name (person-spouses p)))
-;;;(setf (person-spouses p) (sort (person-spouses p) #'string<
+(setf (person-spouses p) (sort (person-spouses p) #'string<))
 )
 
 (defun addchild (child-name p)
@@ -263,11 +263,12 @@
 (defun wquery (relation person tree)
 (let ((p1 (personstruct person tree)))
    (cond ((string= relation "Spouse")
-        ;;;  (listspouses p1 tree)
-        (when p1 (loop for i in (person-spouses p1) doing (format t "~a~%" i))))
+       ;;;  (when p1 (loop for i in (person-spouses p1) doing (format t "~a~%" i)))
+       (listspouses p1 tree)
+             )
           ((string= relation "CHILD")
-         ;;;  (listchildren p1 tree)
-         (when p (loop for i in (person-children p) doing (format t "~a~%")))
+           (listchildren p1 tree)
+      ;;;  (when p1 (loop for i in (person-children p1) doing (format t "~a~%" i)))
              )
           ((string= relation "SIBLING")
            (listsiblings p1 tree)
