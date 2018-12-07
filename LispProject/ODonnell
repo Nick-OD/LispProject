@@ -36,6 +36,18 @@
 (defun getspouses (p)
   (person-spouses (gethash p tree)))
 
+(defun listChildren (p tree)
+  (setf children (copy-list(person-children (gethash p tree))))
+  (setf sortChildren (copy-list(sort children #'string-lessp)))
+  (loop for x in sortChildren
+        do (format t "~d~%" x)))
+
+(defun listSpouses (p tree)
+  (setf spouses (copy-list(person-spouses (gethash p tree))))
+  (setf sortSpouses (copy-list(sort spouses #'string-lessp)))
+  (loop for x in sortSpouses 
+        do (format t "~d~%" x)))
+
 (defun siblings (p tree)
 (let ((parent1 (personstruct (first (person-parents p)) tree))
       (parent2 (personstruct (second (person-parents p)) tree)))
