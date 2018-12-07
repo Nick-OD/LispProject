@@ -261,14 +261,12 @@
 
 
 (defun wquery (relation person tree)
-(let ((p1 (personstruct person tree)))
+(let ((p1 (person-name (gethash person tree))))
    (cond ((string= relation "Spouse")
-       ;;;  (when p1 (loop for i in (person-spouses p1) doing (format t "~a~%" i)))
        (listspouses p1 tree)
              )
           ((string= relation "CHILD")
            (listchildren p1 tree)
-        (when p1 (loop for i in (person-children p1) doing (format t "~a~%" i)))
              )
           ((string= relation "SIBLING")
            (listsiblings p1 tree)
@@ -276,9 +274,11 @@
            ((string= relation "ANCESTOR")
                        
              )
-             ((string= relation "COUSIN")   
+             ((string= relation "COUSIN")
+   
               )
                ((string= relation "UNRELATED")
+
                        )))
 )
 
