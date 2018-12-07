@@ -48,6 +48,18 @@
   (loop for x in sortSpouses 
         do (format t "~d~%" x)))
 
+(defun listSiblings (p tree)
+                   (setf parents (copy-list(person-parents (gethash p tree))))
+                   (setf parent1 (first parents))
+                   (setf parent2 (second parents))
+                   (setf children1 (copy-list (person-children (gethash parent1 tree))))
+                   (setf children2 (copy-list (person-children (gethash parent2 tree))))
+                   (setf childrenAll (union children1 children2)) 
+                   (setf childrenall (copy-list(remove (person-name (gethash p tree)) childrenAll)))
+                   (setf sortChildrenall (copy-list(sort childrenall #'string-lessp)))
+                    (loop for x in sortchildrenall
+                          do (format t "~d~%" x)))
+
 (defun siblings (p tree)
 (let ((parent1 (personstruct (first (person-parents p)) tree))
       (parent2 (personstruct (second (person-parents p)) tree)))
