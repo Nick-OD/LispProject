@@ -36,6 +36,30 @@
 (defun getspouses (p)
   (person-spouses (gethash p tree)))
 
+(defun listChildren (p tree)
+  (setf children (copy-list(person-children (gethash p tree))))
+  (setf sortChildren (copy-list(sort children #'string-lessp)))
+  (loop for x in sortChildren
+        do (format t "~d~%" x)))
+
+(defun listSpouses (p tree)
+  (setf spouses (copy-list(person-spouses (gethash p tree))))
+  (setf sortSpouses (copy-list(sort spouses #'string-lessp)))
+  (loop for x in sortSpouses 
+        do (format t "~d~%" x)))
+
+(defun listSiblings (p tree)
+                   (setf parents (copy-list(person-parents (gethash p tree))))
+                   (setf parent1 (first parents))
+                   (setf parent2 (second parents))
+                   (setf children1 (copy-list (person-children (gethash parent1 tree))))
+                   (setf children2 (copy-list (person-children (gethash parent2 tree))))
+                   (setf childrenAll (union children1 children2)) 
+                   (setf childrenall (copy-list(remove (person-name (gethash p tree)) childrenAll)))
+                   (setf sortChildrenall (copy-list(sort childrenall #'string-lessp)))
+                    (loop for x in sortchildrenall
+                          do (format t "~d~%" x)))
+
 (defun siblings (p tree)
 (let ((parent1 (personstruct (first (person-parents p)) tree))
       (parent2 (personstruct (second (person-parents p)) tree)))
@@ -47,9 +71,9 @@
 (defun ancestors (p tree)
   (let ((parent1 (personstruct(first (person-parents p))tree ))
         (parent2 (personstruct (second (person-parents p))tree )))
-    (if (null parent1)
-         nil
-       (append (list(person-name parent1) (person-name parent2)) (ancestors parent1 tree )(ancestors parent2 tree )))))
+    (when parent1
+       (sort (delete-duplicates(append (list(person-name parent1) (person-name parent2))
+                                       (ancestors parent1 tree )(ancestors parent2 tree )) :test #'equal) #'string<))))
 
 ;;; is funcitons
 (defun isspouse (p1 p2)                              
@@ -77,10 +101,11 @@
 
 (defun iscousin (p1 p2 tree)
 (let ((cousinbool nil) (directrel nil))
-(if (and p1 p2)
-(if (equalp (person-name p1) (person-name p2)) (setf directrel t)) 
+(when (and p1 p2)
+(if (string= (person-name p1) (person-name p2)) (setf directrel t))
+(if (or (ischild p1 p2) (ischild p2 p1)) (setf direct t)) 
 (let ((ancestors2 (ancestors p2 tree)) (ancestors1 (ancestors p1 tree)))
-(if (or (member(person-name p1) ancestors2) (member (person-name p2) ancestors1)) (setf directrel t))
+(if (or (member (person-name p1) ancestors2) (member (person-name p2) ancestors1)) (setf directrel t))
 (when (not directrel)
   (loop for person in ancestors1 doing (if (member person ancestors2 :test #'equal) (setf cousinbool t))))))
   (if cousinbool t nil)))
@@ -94,11 +119,10 @@
 
 (defun isunrelated (p1 p2 tree)
 (let ((unrelatedbool t))
-(if (and p1 p2)
+(when (and p1 p2)
 (if (or (ischild p1 p2) (ischild p2 p1)) (setf unrelatedbool nil)) ; if one person is a child of the other return false
 (if (issibling p1 p2 tree) (setf unrelatedbool nil))
 (if (iscousin p1 p2 tree) (setf unrealtedbool nil))
-(if (= (p1) (p2) #'string) (setf unrealtedbool t))
 (if (or (isancestor p1 p2 tree) (isancestor p2 p1 tree)) (setf unrelatedbool nil)))
 (if unrelatedbool t nil)))
 
@@ -233,20 +257,30 @@
     ((string= relation "COUSIN")  
     (if (iscousin p1 p2 tree) (format t "Yes~%") (format t "No~%"))) 
    ((string= relation "UNRELATED") 
-      (if (isunrelated p1 p2 tree) (format t "No~%") (format t "Yes~%"))))))
+      (if (isunrelated p1 p2 tree) (format t "Yes~%") (format t "No~%"))))))
 
-#||
-(defun wquery (relation p tree)
-(let (p1 (personstruct p tree))
-   (cond ((string= (relation) "Spouse")      )
-                      ((string= (relation) "CHILD")  )
-                      ((string= (relation) "SIBLING")     )
-                      ((string= (relation) "ANCESTOR")  )
-                      ((string= (relation) "COUSIN")   )
-                      ((string= (relation) "UNRELATED")
+
+(defun wquery (relation person tree)
+(let ((p1 (personstruct person tree)))
+   (cond ((string= relation "Spouse")
+        ;;;  (listspouses p1 tree)
+        (when p1 (loop for i in (person-spouses p1) doing (format t "~a~%" i))))
+          ((string= relation "CHILD")
+         ;;;  (listchildren p1 tree)
+         (when p (loop for i in (person-children p) doing (format t "~a~%")))
+             )
+          ((string= relation "SIBLING")
+           (listsiblings p1 tree)
+             )
+           ((string= relation "ANCESTOR")
+                       
+             )
+             ((string= relation "COUSIN")   
+              )
+               ((string= relation "UNRELATED")
                        )))
 )
-||#
+
 
 
 
@@ -257,19 +291,18 @@
         while line doing
        (cond ((string= (first line) "E" )
             ;;;Person creation and spouse children assignment here
-            (format t "~a~%" line)
+          ;;;  (format t "~a~%" line)
               (equery (second line) (third line) (fourth line) tree))                                                                                                                                                                                                   
             ((string= (first line) "X")
              ;Xquery stuff here
              (format t "~a~%" line); prints line
             (xquery (second line) (third line) (fourth line) tree))
-             )
-          ;;;  ((string= (first line) "W")
+           ((string= (first line) "W")
             ;Wquery stuff here
-          ;;;    (format t "~a~%" line)
-          ;;;    (wquery (second line) (third line) (tree))
+            (format t "~a~%" line)
+              (wquery (second line) (third line) tree)
                )))
-)
+)))
     
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
         
