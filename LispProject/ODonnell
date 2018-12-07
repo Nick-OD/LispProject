@@ -49,51 +49,58 @@
         (parent2 (personstruct (second (person-parents p))tree )))
     (if (null parent1)
          nil
-       (append (list(person-name parent1) (person-name parent2)) (ancestors parent1 tree )(ancestors parent2 tree )))))
+       (sort (delete-duplicates(append (list(person-name parent1) (person-name parent2))
+                                       (ancestors parent1 tree )(ancestors parent2 tree )) :test #'equal) #'string<))))
 
 ;;; is funcitons
 (defun isspouse (p1 p2)                              
 (let ((spouse nil)) ; returns t true or nil false
-(if  (member (person-name p1) (person-spouses p2) :test #'equal) (setf spouse t))
+(if (and p1 p2)
+(if  (member (person-name p1) (person-spouses p2) :test #'equal) (setf spouse t)))
 (if spouse t nil))) ; If spouse, spouse is true, else spouse is false 
 
  
 
 (defun ischild (p1 p2)
   (let ((child nil))
-    (if (member (person-name p1) (person-children p2) :test #'equal) (setf child t))
+    (if (and p1 p2)
+    (if (member (person-name p1) (person-children p2) :test #'equal) (setf child t)))
     (if child t nil)))
  
 
 (defun issibling (p1 p2 tree)
 (let ((sibling nil))
-  (if (member (person-name p1) (siblings p2 tree) :test #'equal) (setf sibling t))
+  (if (and p1 p2)
+  (if (member (person-name p1) (siblings p2 tree) :test #'equal) (setf sibling t)))
 (if sibling t nil)))
 
  
 
 (defun iscousin (p1 p2 tree)
 (let ((cousinbool nil) (directrel nil))
-(if (equalp (person-name p1) (person-name p2)) (setf directrel t)) 
+(when (and p1 p2)
+(if (string= (person-name p1) (person-name p2)) (setf directrel t))
+(if (or (ischild p1 p2) (ischild p2 p1)) (setf direct t)) 
 (let ((ancestors2 (ancestors p2 tree)) (ancestors1 (ancestors p1 tree)))
-(if (or (member(person-name p1) ancestors2) (member (person-name p2) ancestors1)) (setf directrel t))
+(if (or (member (person-name p1) ancestors2) (member (person-name p2) ancestors1)) (setf directrel t))
 (when (not directrel)
-  (loop for person in ancestors1 doing (if (member person ancestors2 :test #'equal) (setf cousinbool t)))))
+  (loop for person in ancestors1 doing (if (member person ancestors2 :test #'equal) (setf cousinbool t))))))
   (if cousinbool t nil)))
 
 (defun isancestor (p1 p2 tree)
   (let ((ancestorbool nil))
-    (if (member (person-name p1) (ancestors p2 tree) :test #'equal) (setf ancestorbool t))
+    (if (and p1 p2)
+    (if (member (person-name p1) (ancestors p2 tree) :test #'equal) (setf ancestorbool t)))
     (if ancestorbool t nil)))
  
 
 (defun isunrelated (p1 p2 tree)
 (let ((unrelatedbool t))
+(when (and p1 p2)
 (if (or (ischild p1 p2) (ischild p2 p1)) (setf unrelatedbool nil)) ; if one person is a child of the other return false
 (if (issibling p1 p2 tree) (setf unrelatedbool nil))
 (if (iscousin p1 p2 tree) (setf unrealtedbool nil))
-(if (= (p1) (p2) #'string) (setf unrealtedbool t))
-(if (or (isancestor p1 p2 tree) (isancestor p2 p1 tree)) (setf unrelatedbool nil))
+(if (or (isancestor p1 p2 tree) (isancestor p2 p1 tree)) (setf unrelatedbool nil)))
 (if unrelatedbool t nil)))
 
 (defun getcousins( )
@@ -227,7 +234,7 @@
     ((string= relation "COUSIN")  
     (if (iscousin p1 p2 tree) (format t "Yes~%") (format t "No~%"))) 
    ((string= relation "UNRELATED") 
-      (if (isunrelated p1 p2 tree) (format t "No~%") (format t "Yes~%"))))))
+      (if (isunrelated p1 p2 tree) (format t "Yes~%") (format t "No~%"))))))
 
 #||
 (defun wquery (relation p tree)

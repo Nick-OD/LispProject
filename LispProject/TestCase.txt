@@ -5,3 +5,6 @@
 (E Zach Beth Kara)
 (X John ancestor Kara)
 (X Kyle cousin Kara)
+(X John Spouse Paula)
+(X Kyle Ancestor Mary)
+(X Mary Ancestor Kyle)
