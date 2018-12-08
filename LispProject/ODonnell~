@@ -25,6 +25,7 @@
 
 (defun addchild (child-name p)
   (setf (person-children p) (cons child-name (person-children p)))
+  (setf (person-children p) (sort (person-children p) #'string<))
 )
 
 (defun getparents (p)
@@ -74,6 +75,35 @@
     (when parent1
        (sort (delete-duplicates(append (list(person-name parent1) (person-name parent2))
                                        (ancestors parent1 tree )(ancestors parent2 tree )) :test #'equal) #'string<))))
+
+
+(defun listancestors (p tree)
+
+                   (setf ancestorslist (copy-list (ants p tree)))
+
+                   (setf sorted (copy-list (sort ancestorslist #'strign-lessp)))
+
+                   (loop for x in sorted
+
+                         do (format t "~d~%" x)))
+
+ 
+
+(defun ants ( p tree)
+
+                   (let ((parent1 (first (person-parents (gethash p tree))))
+
+                         (parent2 (second (person-parents (gethash p tree)))))
+
+                         (if (null (or parent1 parent2))
+
+                             nil
+
+                           (when parent1
+
+                           (append (list (person-name (gethash parent1 tree)) (person-name (gethash parent2 tree))) (ants parent1 tree) (ants parent2 tree))))))
+
+
 
 ;;; is funcitons
 (defun isspouse (p1 p2)                              
@@ -126,11 +156,12 @@
 (if (or (isancestor p1 p2 tree) (isancestor p2 p1 tree)) (setf unrelatedbool nil)))
 (if unrelatedbool t nil)))
 
-(defun getcousins( )
-
-)
-(defun getunrelated( )
-
+(defun getcousins(p tree)
+  (sort (remove nil (loop for v being the hash-values of tree
+                          collecting (if (iscousin p v tree) (person-name v)))) #'string<))
+(defun getunrelated(p tree)
+ (sort (remove nil (loop for v being the hash-values of tree
+                         collecting (if (isunrelated p v tree) (person-name v)))) #'string<)
 ) 
   
 
@@ -261,26 +292,25 @@
 
 
 (defun wquery (relation person tree)
-(let ((p1 (personstruct person tree)))
+(let ((p1 (person-name (gethash person tree))))
    (cond ((string= relation "Spouse")
-       ;;;  (when p1 (loop for i in (person-spouses p1) doing (format t "~a~%" i)))
-       (listspouses p1 tree)
-             )
+       (listspouses p1 tree))
           ((string= relation "CHILD")
-           (listchildren p1 tree)
-      ;;;  (when p1 (loop for i in (person-children p1) doing (format t "~a~%" i)))
-             )
+           (listchildren p1 tree))
           ((string= relation "SIBLING")
            (listsiblings p1 tree)
-             )
+          )
            ((string= relation "ANCESTOR")
                        
              )
-             ((string= relation "COUSIN")   
+             ((string= relation "COUSIN")
+              (let ((p (personstruct person tree)))
+              (when p (loop for i in (getcousins p tree) doing (format t "~a~%" i))))
               )
                ((string= relation "UNRELATED")
-                       )))
-)
+                (let ((p (personstruct person tree)))
+                (loop for i in (getunrelated p tree) doing (format t "~a~%" i)))
+                       ))))
 
 
 

@@ -8,6 +8,9 @@
 (E John Trish Harry)
 (E John Mary Bob)
 (E John Mary Lola)
-(W sibling Zach)
-(W children John)
-(W children Susan)
+(E Kara Joe Billy)
+(W ancestor Billy)
+(W spouse John)
+(W child John)
+(W sibling Bob)
+

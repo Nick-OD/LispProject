@@ -1,0 +1,37 @@
+(E Alex Alberta Andrew)
+(E Arthur Amelia Amy
+)
+(E Andrew Amy Armond
+)
+(E Bert Beth Betty)
+(E Brenda Baylor Bradley
+)
+(E Bradley Betty Bill)
+
+(E Carl Charlene Chrissy)
+(E Christopher Chrissy Cammy)
+(E Christopher Chrissy Carter)
+(E Derrick Doris David)
+(E David Drusilla Donald)
+(E David Drusilla Daniel)
+(E Aretha Armond Emma
+)
+(E Elmer Emma Ervin)
+
+(E Ervin Esmerelda Erskin)
+
+(X Alex ancestor Erskin)
+
+(W ancestor Ervin
+)
+(W ancestor Erskin)
+
+(E Gavin Gladys Garrett)
+
+(E Gavin Gladys Glenda)
+
+(E Gavin Gladys Glendowyn)
+
+(E Gavin Gladys Gemma)
+(E Glenda Gareth)
+(W unrelated Bert)
