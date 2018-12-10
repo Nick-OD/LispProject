@@ -78,29 +78,19 @@
 
 
 (defun listancestors (p tree)
-
                    (setf ancestorslist (copy-list (ants p tree)))
-
-                   (setf sorted (copy-list (sort ancestorslist #'string-lessp)))
-
+                   (setf sorted (remove-duplicates (copy-list (sort ancestorslist #'string-lessp))))
                    (loop for x in sorted
-
                          do (format t "~d~%" x)))
 
  
 
 (defun ants ( p tree)
-
                    (let ((parent1 (first (person-parents (gethash p tree))))
-
                          (parent2 (second (person-parents (gethash p tree)))))
-
                          (if (null (or parent1 parent2))
-
                              nil
-
                            (when parent1
-
                            (append (list (person-name (gethash parent1 tree)) (person-name (gethash parent2 tree))) (ants parent1 tree) (ants parent2 tree))))))
 
 
