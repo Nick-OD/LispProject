@@ -195,7 +195,7 @@
                    (setf spouses (copy-list (person-spouses temp)))
                    (setf spouses (append spouses (list p1)))
                    (storeperson p2 (make-person :name p2
-            (maphash #'(lambda (k v) (format t "~a => ~a~%" k v)) tree)                                    :parents parents
+                                                :parents parents
                                                 :children children 
                                                 :spouses spouses) tree))))))
     (progn ;else part of (if (eql p3 nil)) aka children
