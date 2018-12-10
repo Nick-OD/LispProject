@@ -325,8 +325,7 @@
         while line doing
        (cond ((string= (first line) "E" )
             ;;;Person creation and spouse children assignment here
-          ;;;  (format t "~a~%" line)
-              (equery (second line) (third line) (fourth line) tree))                                                                                                                                                                                                   
+              (equery (second line) (third line) (fourth line) tree))                                       
             ((string= (first line) "X")
              ;Xquery stuff here
              (format t "~a~%" line); prints line
